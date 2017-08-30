@@ -1,0 +1,22 @@
+{
+  "name": "no-twitter-interface",
+  "version": "1.0.0",
+  "description": "twitter interface using express and node",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdmendiola/proj-twitter-interface.git"
+  },
+  "author": "David Mendiola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdmendiola/proj-twitter-interface/issues"
+  },
+  "homepage": "https://github.com/jdmendiola/proj-twitter-interface#readme",
+  "dependencies": {
+    "twit": "^2.2.9"
+  }
+}
