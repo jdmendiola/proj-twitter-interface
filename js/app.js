@@ -6,9 +6,8 @@ const path = require('path');
 const Twit = require('twit');
 const app = express();
 
-app.use('/static', express.static(path.join(__dirname, '..', 'public')));
+app.use('/static', express.static('public'));
 app.set('view engine', 'pug');
-app.set('views', '../views/');
 
 let T = new Twit(config);
 
