@@ -2,7 +2,6 @@
 
 const express = require('express');
 const config = require('../config.js');
-const path = require('path');
 const Twit = require('twit');
 const app = express();
 let Data = {};
@@ -14,6 +13,8 @@ let T = new Twit(config);
 
 T.get('account/verify_credentials', (err, data, response) => {
     Data.screenName = data.screen_name;
+    Data.profileImage = originalImageSize(data.profile_image_url_https);
+    Data.profileBgImage = data.profile_background_image_url_https;
     console.log(Data);
 });
 
@@ -24,3 +25,8 @@ app.get('/', (req, res) => {
 app.listen(3000, () => {
     console.log('The application is running on localhost:3000!');
 });
+
+function originalImageSize(profileImage){
+    profileImage = profileImage.replace('_normal', '');
+    return profileImage;
+}
