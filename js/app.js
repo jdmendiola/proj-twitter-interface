@@ -11,29 +11,27 @@ app.set('view engine', 'pug');
 
 let T = new Twit(config);
 
-T.get('account/verify_credentials')
-    .catch(function (err){
-        console.log('caught error', err.stack);
-    })
-    .then(function (result){
-        
-        Data.screenName = result.data.screen_name;
-        Data.profileImage = originalImageSize(result.data.profile_image_url_https, '_normal');
-
-        T.get('users/profile_banner', {screen_name: Data.screenName})
+app.get('/', (req, res) => {
+    
+    T.get('account/verify_credentials')
         .catch(function (err){
             console.log('caught error', err.stack);
         })
         .then(function (result){
-            Data.headerImage = result.data.sizes.web_retina.url
-            console.log(Data);
-        });
-        
-    });
+            Data.screenName = result.data.screen_name;
+            Data.profileImage = originalImageSize(result.data.profile_image_url_https, '_normal');
+        })
+        .then(function (result){
+            T.get('users/profile_banner', {screen_name: Data.screenName}, function(err, data, response){
+                Data.headerImage = data.sizes.web_retina.url
+            })
+            .then(function (result){
+                console.log(Data);
+                res.render('index', {Data});
+            })
+        })
 
-app.get('/', (req, res) => {
-    res.render('index', {Data});
-});
+})
 
 app.listen(3000, () => {
     console.log('The application is running on localhost:3000!');

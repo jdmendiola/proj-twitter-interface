@@ -1452,11 +1452,9 @@ li:only-child .circle--clone--remove {
 .circle--header {
   background: #1da1f2;
   padding: 20px 0;
-  margin-bottom: 30px;
-  height: 200px;
 }
 .profile_image{
-  width: 20%;
+  width: 10%;
   margin: 0 auto;
   text-align: center;
 }
@@ -2186,10 +2184,7 @@ body {
 }
 /* line 53, ../sass/global.sass */
 .app--section--header {
-  position: fixed;
-  top: 65px;
-  right: 0;
-  left: 0;
+  height:60px;
   background: #fafafa;
   z-index: 2;
   border-bottom: 1px solid #e1e1e1;
