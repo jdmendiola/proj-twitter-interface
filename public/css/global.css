@@ -1453,6 +1453,19 @@ li:only-child .circle--clone--remove {
   background: #1da1f2;
   padding: 20px 0;
   margin-bottom: 30px;
+  height: 200px;
+}
+.profile_image{
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+.profile_image img{
+  display: inline;
+  width: 20%;
+  height: auto;
+  border-radius: 50%;
+  border: 5px solid #FFF;
 }
 /* line 2, ../sass/circle/core/_mixins.sass */
 .circle--header:before, .circle--header:after {
@@ -2108,7 +2121,6 @@ body {
 
 /* line 9, ../sass/global.sass */
 body {
-  padding-top: 128px;
   overflow: hidden;
 }
 
@@ -2141,13 +2153,7 @@ body {
 
 /* line 29, ../sass/global.sass */
 .circle--header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1;
-  margin: 0;
-  padding: 20px 5px;
+  
 }
 
 /* line 39, ../sass/global.sass */
