@@ -14,22 +14,22 @@ let T = new Twit(config);
 app.get('/', (req, res) => {
     
     T.get('account/verify_credentials')
-        .catch(function (err){
-            console.log('caught error', err.stack);
+    .catch(err => {
+        console.log('caught error', err.stack);
+    })
+    .then(result => {
+        Data.screenName = result.data.screen_name;
+        Data.profileImage = originalImageSize(result.data.profile_image_url_https, '_normal');
+    })
+    .then(result => {
+        T.get('users/profile_banner', {screen_name: Data.screenName}, (err, data, response) => {
+            Data.headerImage = data.sizes.web_retina.url
         })
-        .then(function (result){
-            Data.screenName = result.data.screen_name;
-            Data.profileImage = originalImageSize(result.data.profile_image_url_https, '_normal');
+        .then(result => {
+            console.log(Data);
+            res.render('index', {Data});
         })
-        .then(function (result){
-            T.get('users/profile_banner', {screen_name: Data.screenName}, function(err, data, response){
-                Data.headerImage = data.sizes.web_retina.url
-            })
-            .then(function (result){
-                console.log(Data);
-                res.render('index', {Data});
-            })
-        })
+    })
 
 })
 
