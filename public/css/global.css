@@ -1456,13 +1456,13 @@ li:only-child .circle--clone--remove {
   height: 200px;
 }
 .profile_image{
-  width: 50%;
+  width: 20%;
   margin: 0 auto;
   text-align: center;
 }
 .profile_image img{
   display: inline;
-  width: 20%;
+  width: 100%;
   height: auto;
   border-radius: 50%;
   border: 5px solid #FFF;
