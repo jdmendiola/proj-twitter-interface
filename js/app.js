@@ -13,24 +13,26 @@ let T = new Twit(config);
 
 app.get('/', (req, res) => {
     
-    T.get('account/verify_credentials')
-    .catch(err => {
-        console.log('caught error', err.stack);
-    })
-    .then(result => {
-        Data.screenName = result.data.screen_name;
-        Data.profileImage = originalImageSize(result.data.profile_image_url_https, '_normal');
-    })
-    .then(result => {
-        T.get('users/profile_banner', {screen_name: Data.screenName}, (err, data, response) => {
-            Data.headerImage = data.sizes.web_retina.url
-        })
-        .then(result => {
-            console.log(Data);
-            res.render('index', {Data});
-        })
-    })
+    Promise.all([getAccountInfo()])
+    .then(values => {
 
+        Data.screenName = values[0].data.screen_name;
+        Data.profileImage = originalImageSize(values[0].data.profile_image_url_https, '_normal'); 
+
+        Promise.all([
+            getAccountBanner(Data.screenName),
+            getRecentTweets(Data.screenName, 5)
+        ])
+        .then(values => {
+
+            Data.headerImage = values[0].data.sizes.web_retina.url;
+            Data.twitterProfile = values[1]
+            //console.log(Data.twitterProfile);
+            res.render('index', {Data});
+
+        });
+
+    });
 })
 
 app.listen(3000, () => {
@@ -40,4 +42,16 @@ app.listen(3000, () => {
 function originalImageSize(profileImage, strippedText){
     profileImage = profileImage.replace(strippedText, '');
     return profileImage;
+}
+
+function getAccountInfo(){
+    return T.get('account/verify_credentials')
+}
+
+function getAccountBanner(twitterId){
+    return T.get('users/profile_banner', {screen_name: twitterId})
+}
+
+function getRecentTweets(twitterId, count){
+    return T.get('statuses/user_timeline', {user_id: twitterId, count: count})
 }
