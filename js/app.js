@@ -26,8 +26,15 @@ app.get('/', (req, res) => {
         .then(values => {
 
             Data.headerImage = values[0].data.sizes.web_retina.url;
-            Data.twitterProfile = values[1]
-            //console.log(Data.twitterProfile);
+            var extractedTweets = values[1].data;
+            var tweets = extractedTweets.map(value => {
+                var tweetProps = {};
+                tweetProps = value.text;
+                //finish adding tweet properties
+                return tweetProps;
+            });
+            
+            console.log(tweets);
             res.render('index', {Data});
 
         });
