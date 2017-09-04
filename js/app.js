@@ -27,11 +27,22 @@ app.get('/', (req, res) => {
 
             Data.headerImage = values[0].data.sizes.web_retina.url;
             var extractedTweets = values[1].data;
+            
             var tweets = extractedTweets.map(value => {
+                
                 var tweetProps = {};
-                tweetProps = value.text;
-                //finish adding tweet properties
+                
+                tweetProps.tweet = value.text;
+                tweetProps.likes = value.favorite_count;
+
+                if (value.retweeted_status != null || undefined){
+                    tweetProps.retweetLikes = value.retweeted_status.favorite_count;
+                }
+
+                tweetProps.retweets = value.retweet_count;
+                
                 return tweetProps;
+
             });
             
             console.log(tweets);
