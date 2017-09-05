@@ -2,6 +2,7 @@
 
 const express = require('express');
 const config = require('../config.js');
+const moment = require('moment');
 const Twit = require('twit');
 const app = express();
 let Data = {};
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
         Data.screenName = values[0].data.screen_name;
         Data.profileImage = originalImageSize(values[0].data.profile_image_url_https, '_normal'); 
+        Data.name = values[0].data.name;
 
         Promise.all([
             getAccountBanner(Data.screenName),
@@ -35,6 +37,11 @@ app.get('/', (req, res) => {
                 tweetProps.tweet = value.text;
                 tweetProps.likes = value.favorite_count;
                 tweetProps.retweets = value.retweet_count;
+                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('MMM Do YYYY');
+                tweetProps.pastTime = moment(tweetProps.time, 'MMM Do YYYY').fromNow();
+
+                //format time
+
 
                 if (value.retweeted_status != null || undefined){
                     tweetProps.retweetLikes = value.retweeted_status.favorite_count;
@@ -45,8 +52,10 @@ app.get('/', (req, res) => {
                 return tweetProps;
 
             });
+
+            Data.tweet = tweets;
             
-            console.log(tweets);
+            console.log(Data.tweet);
             res.render('index', {Data});
 
         });
