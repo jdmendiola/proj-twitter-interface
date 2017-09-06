@@ -14,41 +14,21 @@ let T = new Twit(config);
 
 app.get('/', (req, res) => {
 
-    Promise.all([getAccountInfo()])
+    Promise.all([
+        getAccountInfo()
+    ])
     .then(values => {
 
-        Data.screenName = values[0].data.screen_name;
-        Data.profileImage = originalImageSize(values[0].data.profile_image_url_https, '_normal'); 
-        Data.name = values[0].data.name;
+        Data.accountInfo = values[0];
 
         Promise.all([
-            getAccountBanner(Data.screenName),
-            getRecentTweets(Data.screenName, 5)
+            getAccountBanner(Data.accountInfo.screenName),
+            getRecentTweets(Data.accountInfo.screenName, 5)
         ])
         .then(values => {
 
-            Data.headerImage = values[0].data.sizes.web_retina.url;
-            var extractedTweets = values[1].data;
-
-            var tweets = extractedTweets.map(value => {
-                
-                var tweetProps = {};
-                
-                tweetProps.tweet = value.text;
-                tweetProps.likes = value.favorite_count;
-                tweetProps.retweets = value.retweet_count;
-                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('HH:mm a, DD/MM/YY');
-                
-                if (value.retweeted_status != null || undefined){
-                    tweetProps.retweetLikes = value.retweeted_status.favorite_count;
-                }
-
-                return tweetProps;
-
-            });
-
-            Data.tweet = tweets;
-            
+            Data.headerImage = values[0];
+            Data.tweet = values[1];
             console.log(Data.tweet);
             res.render('index', {Data});
 
@@ -61,19 +41,56 @@ app.listen(3000, () => {
     console.log('The application is running on localhost:3000!');
 });
 
-function originalImageSize(profileImage, strippedText){
-    profileImage = profileImage.replace(strippedText, '');
-    return profileImage;
-}
-
 function getAccountInfo(){
     return T.get('account/verify_credentials')
+        .catch(error => {
+            console.log(error);
+        })
+        .then(values => {
+            return ({
+                screenName: values.data.screen_name,
+                profileImage: values.data.profile_image_url_https.replace('_normal', ''),
+                name: values.data.name,
+                friends: values.data.friends_count
+            })
+        })
 }
 
 function getAccountBanner(twitterId){
     return T.get('users/profile_banner', {screen_name: twitterId})
+        .catch(error => {
+            console.log(error);
+        })
+        .then(values => {
+            return values.data.sizes.web_retina.url
+        });
 }
 
 function getRecentTweets(twitterId, count){
     return T.get('statuses/user_timeline', {user_id: twitterId, count: count})
+        .catch(error => {
+            console.log(error);
+        })
+        .then(values => {
+
+            let tweets = values.data.map(value => {
+                
+                var tweetProps = {};
+                
+                tweetProps.tweet = value.text;
+                tweetProps.likes = value.favorite_count;
+                tweetProps.retweets = value.retweet_count;
+                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('hh:mm a, DD/MM/YY');
+                
+                if (value.retweeted_status != null || undefined){
+                    tweetProps.retweetLikes = value.retweeted_status.favorite_count;
+                }
+
+                return tweetProps;
+
+            });
+
+            return tweets
+
+        });
 }
