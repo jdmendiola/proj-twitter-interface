@@ -24,14 +24,16 @@ app.get('/', (req, res) => {
         Promise.all([
             getAccountBanner(Data.accountInfo.screenName),
             getRecentTweets(Data.accountInfo.screenName, 5),
-            getRecentFriends(Data.accountInfo.screenName, 5)
+            getRecentFriends(Data.accountInfo.screenName, 5),
+            getRecentSentMessage(5)
         ])
         .then(values => {
 
             Data.headerImage = values[0];
             Data.tweet = values[1];
             Data.friendsList = values[2]
-            //console.log(Data.friendsList);
+            Data.sentMessages = values[3]
+            console.log(Data.sentMessages);
             res.render('index', {Data});
 
         });
@@ -82,7 +84,7 @@ function getRecentTweets(twitterId, count){
                 tweetProps.tweet = value.text;
                 tweetProps.likes = value.favorite_count;
                 tweetProps.retweets = value.retweet_count;
-                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('hh:mm a, DD/MM/YY');
+                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('h:mma, DD/MM/YY');
                 
                 if (value.retweeted_status != null || undefined){
                     tweetProps.retweetLikes = value.retweeted_status.favorite_count;
@@ -119,4 +121,29 @@ function getRecentFriends(twitterId, count){
             return friends
 
         });
+}
+
+function getRecentSentMessage(count){
+    return T.get('direct_messages/sent', {count: count})
+    .catch(error => {
+        console.log(error.stack);
+    })
+    .then(values => {
+        
+        let message = values.data.map(value => {
+
+            let sentMessage = {};
+
+            sentMessage.body = value.text;
+            sentMessage.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('h:mma');
+            sentMessage.date = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('DD/MM/YY');
+
+            return sentMessage;
+
+        });
+
+        return message
+
+    });
+
 }
