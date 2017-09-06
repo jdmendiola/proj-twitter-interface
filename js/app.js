@@ -23,13 +23,15 @@ app.get('/', (req, res) => {
 
         Promise.all([
             getAccountBanner(Data.accountInfo.screenName),
-            getRecentTweets(Data.accountInfo.screenName, 5)
+            getRecentTweets(Data.accountInfo.screenName, 5),
+            getRecentFriends(Data.accountInfo.screenName, 5)
         ])
         .then(values => {
 
             Data.headerImage = values[0];
             Data.tweet = values[1];
-            console.log(Data.tweet);
+            Data.friendsList = values[2]
+            //console.log(Data.friendsList);
             res.render('index', {Data});
 
         });
@@ -75,7 +77,7 @@ function getRecentTweets(twitterId, count){
 
             let tweets = values.data.map(value => {
                 
-                var tweetProps = {};
+                let tweetProps = {};
                 
                 tweetProps.tweet = value.text;
                 tweetProps.likes = value.favorite_count;
@@ -91,6 +93,30 @@ function getRecentTweets(twitterId, count){
             });
 
             return tweets
+
+        });
+}
+
+function getRecentFriends(twitterId, count){
+    return T.get('friends/list', {screen_name: twitterId, count: count})
+        .catch(error => {
+            console.log(error);
+        })
+        .then(values => {
+
+            let friends = values.data.users.map(value => {
+                
+                let friend = {};
+
+                friend.name = value.name;
+                friend.screenName = value.screen_name;
+                friend.profileImage = value.profile_image_url_https.replace('_normal', '');
+
+                return friend
+
+            });
+
+            return friends
 
         });
 }
