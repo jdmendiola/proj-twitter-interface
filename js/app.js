@@ -13,7 +13,7 @@ app.set('view engine', 'pug');
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-    
+
     Promise.all([getAccountInfo()])
     .then(values => {
 
@@ -37,17 +37,11 @@ app.get('/', (req, res) => {
                 tweetProps.tweet = value.text;
                 tweetProps.likes = value.favorite_count;
                 tweetProps.retweets = value.retweet_count;
-                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('MMM Do YYYY');
-                tweetProps.pastTime = moment(tweetProps.time, 'MMM Do YYYY').fromNow();
-
-                //format time
-
-
+                tweetProps.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('HH:mm a, DD/MM/YY');
+                
                 if (value.retweeted_status != null || undefined){
                     tweetProps.retweetLikes = value.retweeted_status.favorite_count;
                 }
-
-                //add tweet time
 
                 return tweetProps;
 
