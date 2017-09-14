@@ -1,0 +1,13 @@
+.grid-33
+    .app--section
+        ul.app--user--list
+            each val in Data.friendsList
+                li
+                    .circle--fluid
+                        .circle--fluid--cell.circle--fluid--primary
+                            a.app--tweet--author
+                                .app--avatar(style=`background-image: url(${val.profileImage})`)
+                                    img(src=val.profileImage)
+                                h4= val.name
+                                p @#{val.screenName}
+                        .circle--fluid--cell
