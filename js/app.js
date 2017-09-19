@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
             Data.tweet = values[1];
             Data.friendsList = values[2]
             Data.sentMessages = values[3]
-            console.log(Data);
             res.render('index', {Data});
 
         });
