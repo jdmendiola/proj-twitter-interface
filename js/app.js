@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
             Data.tweet = values[1];
             Data.friendsList = values[2]
             Data.sentMessages = values[3]
-            console.log(Data.sentMessages);
+            console.log(Data);
             res.render('index', {Data});
 
         });
@@ -137,6 +137,7 @@ function getRecentSentMessage(count){
             sentMessage.body = value.text;
             sentMessage.time = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('h:mma');
             sentMessage.date = moment(value.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('DD/MM/YY');
+            sentMessage.receipient = value.recipient_screen_name;
 
             return sentMessage;
 
