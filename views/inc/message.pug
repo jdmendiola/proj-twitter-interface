@@ -1,0 +1,15 @@
+.grid-33
+  .app--section
+    ul.app--message--list
+        each val in Data.sentMessages
+            li
+                h3
+                    | Conversation with 
+                    a=val.receipient
+                ul.app--message--conversation
+                    li.app--message--me
+                        .app--avatar(style=`background-image: url(${Data.accountInfo.profileImage})`)
+                            img(src=`${Data.accountInfo.profileImage}`)
+                        p.app--message--text
+                            | #{val.body}
+                        p.app--message--timestamp= `Sent at ${val.time} on ${val.date}`
