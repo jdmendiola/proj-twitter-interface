@@ -14,51 +14,51 @@ let T = new Twit(config);
 
 
 
-app.get('/', (req, res) => {
-    res.send("hello");
-});
-
-app.use((req, res, next) => {
-    const err = new Error("Oh noes!");
-    next(err);
-});
-
-app.use((err, req, res, next) => {
-    res.status(404);
-    res.send("error occured");
-});
-
-
-
 // app.get('/', (req, res) => {
+//     res.send("hello");
+// });
 
-//     Promise.all([
-//             getAccountInfo()
-//         ])
-//         .then(values => {
+// app.use((req, res, next) => {
+//     const err = new Error("Oh noes!");
+//     next(err);
+// });
 
-//             Data.accountInfo = values[0];
+// app.use((err, req, res, next) => {
+//     res.status(404);
+//     res.send("error occured");
+// });
 
-//             Promise.all([
-//                     getAccountBanner(Data.accountInfo.screenName),
-//                     getRecentTweets(Data.accountInfo.screenName, 5),
-//                     getRecentFriends(Data.accountInfo.screenName, 5),
-//                     getRecentSentMessage(5)
-//                 ])
-//                 .then(values => {
 
-//                     Data.headerImage = values[0];
-//                     Data.tweet = values[1];
-//                     Data.friendsList = values[2]
-//                     Data.sentMessages = values[3]
-//                     res.render('index', {
-//                         Data
-//                     });
 
-//                 });
+app.get('/', (req, res) => {
 
-//         });
-// })
+    Promise.all([
+            getAccountInfo()
+        ])
+        .then(values => {
+
+            Data.accountInfo = values[0];
+
+            Promise.all([
+                    getAccountBanner(Data.accountInfo.screenName),
+                    getRecentTweets(Data.accountInfo.screenName, 5),
+                    getRecentFriends(Data.accountInfo.screenName, 5),
+                    getRecentSentMessage(5)
+                ])
+                .then(values => {
+
+                    Data.headerImage = values[0];
+                    Data.tweet = values[1];
+                    Data.friendsList = values[2]
+                    Data.sentMessages = values[3]
+                    res.render('index', {
+                        Data
+                    });
+
+                });
+
+        });
+})
 
 app.listen(3000, () => {
     console.log('The application is running on localhost:3000!');
