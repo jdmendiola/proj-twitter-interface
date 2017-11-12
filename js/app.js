@@ -12,24 +12,6 @@ app.set('view engine', 'pug');
 
 let T = new Twit(config);
 
-
-
-// app.get('/', (req, res) => {
-//     res.send("hello");
-// });
-
-// app.use((req, res, next) => {
-//     const err = new Error("Oh noes!");
-//     next(err);
-// });
-
-// app.use((err, req, res, next) => {
-//     res.status(404);
-//     res.send("error occured");
-// });
-
-
-
 app.get('/', (req, res) => {
 
     Promise.all([
@@ -60,23 +42,15 @@ app.get('/', (req, res) => {
         });
 })
 
-//Create error handler route
-
 app.use((req, res, next) => {
-    const err = new Error();
     next(err);
 });
 
 app.use((err, req, res, next) => {
+    res.locals.url = req.url;
     res.status(404);
     res.render("error");
 });
-
-
-
-
-
-
 
 app.listen(3000, () => {
     console.log('The application is running on localhost:3000!');
