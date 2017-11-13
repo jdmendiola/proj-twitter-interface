@@ -2,8 +2,9 @@
   "name": "no-twitter-interface",
   "version": "1.0.0",
   "description": "twitter interface using express and node",
-  "main": "js/app.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node js/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
