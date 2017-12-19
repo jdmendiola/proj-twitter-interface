@@ -2283,7 +2283,7 @@ a:hover .app--avatar {
 /* line 117, ../sass/global.sass */
 .app--tweet--char {
   position: absolute;
-  right: 30px;
+  right: 40px;
   bottom: 12px;
   color: #ccc;
   font-size: 1.8rem;
