@@ -1,6 +1,5 @@
 $(function(){
-    $("#tweet-textarea").on("keyup", updateCount);
-    $("#tweet-textarea").on("change", updateCount);
+    $("#tweet-textarea").on("keyup change", updateCount);
 });
 
 function updateCount(){
