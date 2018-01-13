@@ -11,42 +11,45 @@ let Data = {};
 
 app.use('/static', express.static('public'));
 app.set('view engine', 'pug');
-
+app.use(bodyParser.urlencoded({extended: false}))
 
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-    Promise.all([
-            getAccountInfo()
-        ])
-        .then(values => {
+    res.render('test', {Data});
 
-            Data.accountInfo = values[0];
-            
-            // Promise.all([
-            //         getAccountBanner(Data.accountInfo.screenName),
-            //         getRecentTweets(Data.accountInfo.screenName, 5),
-            //         getRecentFriends(Data.accountInfo.screenName, 5),
-            //         getRecentSentMessage(5)
-            //     ])
-            //     .then(values => {
+    // Promise.all([
+    //     getAccountInfo()
+    // ])
+    // .then(values => {
 
-            //         Data.headerImage = values[0];
-            //         Data.tweet = values[1];
-            //         Data.friendsList = values[2]
-            //         Data.sentMessages = values[3]
-            //         res.render('index', {
-            //             Data
-            //         });
+    //     Data.accountInfo = values[0];
+        
+    //     Promise.all([
+    //             getAccountBanner(Data.accountInfo.screenName),
+    //             getRecentTweets(Data.accountInfo.screenName, 5),
+    //             getRecentFriends(Data.accountInfo.screenName, 5),
+    //             getRecentSentMessage(5)
+    //         ])
+    //         .then(values => {
 
-            //     });
+    //             Data.headerImage = values[0];
+    //             Data.tweet = values[1];
+    //             Data.friendsList = values[2]
+    //             Data.sentMessages = values[3]
+    //             res.render('index', {
+    //                 Data
+    //             });
 
-        });
+    //         });
+
+    // });
 });
 
-// app.post('/', (req, res) => {
-//     console.log(req.body);
-// });
+app.post('/', (req, res) => {
+    Data.post = req.body.name;
+    res.render('test', {Data});
+});
 
 app.use((req, res, next) => {
     next(err);
