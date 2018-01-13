@@ -1,5 +1,8 @@
 $(function(){
+    //character count
     $("#tweet-textarea").on("keyup change", updateCount);
+    //new tweet ajax
+    //$.post('/', "david");
 });
 
 function updateCount(){

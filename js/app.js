@@ -1,46 +1,52 @@
 'use strict';
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const config = require('../config.js');
 const moment = require('moment');
 const Twit = require('twit');
 const app = express();
+
 let Data = {};
 
 app.use('/static', express.static('public'));
 app.set('view engine', 'pug');
 
+
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-
     Promise.all([
             getAccountInfo()
         ])
         .then(values => {
 
             Data.accountInfo = values[0];
+            
+            // Promise.all([
+            //         getAccountBanner(Data.accountInfo.screenName),
+            //         getRecentTweets(Data.accountInfo.screenName, 5),
+            //         getRecentFriends(Data.accountInfo.screenName, 5),
+            //         getRecentSentMessage(5)
+            //     ])
+            //     .then(values => {
 
-            Promise.all([
-                    getAccountBanner(Data.accountInfo.screenName),
-                    getRecentTweets(Data.accountInfo.screenName, 5),
-                    getRecentFriends(Data.accountInfo.screenName, 5),
-                    getRecentSentMessage(5)
-                ])
-                .then(values => {
+            //         Data.headerImage = values[0];
+            //         Data.tweet = values[1];
+            //         Data.friendsList = values[2]
+            //         Data.sentMessages = values[3]
+            //         res.render('index', {
+            //             Data
+            //         });
 
-                    Data.headerImage = values[0];
-                    Data.tweet = values[1];
-                    Data.friendsList = values[2]
-                    Data.sentMessages = values[3]
-                    res.render('index', {
-                        Data
-                    });
-
-                });
+            //     });
 
         });
-})
+});
+
+// app.post('/', (req, res) => {
+//     console.log(req.body);
+// });
 
 app.use((req, res, next) => {
     next(err);
