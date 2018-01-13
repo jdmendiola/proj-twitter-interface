@@ -1,8 +1,11 @@
 $(function(){
     //character count
     $("#tweet-textarea").on("keyup change", updateCount);
-    //new tweet ajax
-    $.post('/', {name: "David Mendiola"});
+    //ajax
+    $('#ajaxTest').on('click', function(e){
+        console.log("d");
+        $.post('/', {name: "David Mendiola"});
+    });
 });
 
 function updateCount(){
