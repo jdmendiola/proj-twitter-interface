@@ -3,8 +3,9 @@ $(function(){
     $("#tweet-textarea").on("keyup change", updateCount);
     //ajax
     $('#ajaxTest').on('click', function(e){
-        console.log("d");
-        $.post('/', {name: "David Mendiola"});
+        $.post('/post', {name: "John David Mendiola"}, function(data){
+            console.log(data);
+        });
     });
 });
 

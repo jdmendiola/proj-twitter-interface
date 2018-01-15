@@ -46,9 +46,12 @@ app.get('/', (req, res) => {
     // });
 });
 
-app.post('/', (req, res) => {
+app.post('/post', (req, res) => {
     Data.post = req.body.name;
-    res.render('test', {Data});
+    app.render('test', {Data}, function(err, html){
+        console.log(html);
+        res.send(html);
+    });
 });
 
 app.use((req, res, next) => {
