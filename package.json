@@ -23,8 +23,5 @@
     "moment": "^2.18.1",
     "pug": "^2.0.0-rc.3",
     "twit": "^2.2.9"
-  },
-  "devDependencies": {
-    "nodemon": "^1.11.0"
   }
 }
