@@ -5,7 +5,7 @@ $(function(){
     $('#ajaxTest').on('click', function(e){
         console.log("fire");
         $.post('/post', {name: "Shaw Higgins"}, function(data){
-            $('#main-wrapper').html(data);
+            $('body').html(data);
         });
     });
 });
