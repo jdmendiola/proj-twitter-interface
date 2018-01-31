@@ -16,8 +16,22 @@ app.use(bodyParser.urlencoded({extended: false}))
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-    Data.post = "Shawn Carter";
-    res.render('test', {Data});
+
+    Promise.all([
+        getAccountInfo()
+    ])
+    .then(values => {
+        T.post('statuses/update', {
+            status: 'The joker!'
+        }).then(values => {
+            console.log(values);
+        })
+    });
+
+
+
+
+
 
     // Promise.all([
     //     getAccountInfo()

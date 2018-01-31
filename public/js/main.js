@@ -4,7 +4,7 @@ $(function(){
     //ajax
     $('#ajaxTest').on('click', function(e){
         console.log("fire");
-        $.post('/post', {name: "Shaw Higgins"}, function(data){
+        $.post('/post', {name: "Jack Nicholson played the joker"}, function(data){
             $('body').html(data);
         });
     });
