@@ -16,7 +16,26 @@ app.use(bodyParser.urlencoded({extended: false}))
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-    res.render('inc/test-body');
+
+    Promise.all([
+
+        getAccountInfo()
+
+    ]).then(values => {
+
+        Data.accountInfo = values[0];
+
+        Promise.all([
+            getRecentTweets(Data.accountInfo.screenName, 1)
+        ]).then(values => {
+            Data.tweet = values[0];
+            console.log(Data.tweet);
+            res.render('test-index', {Data});
+        });
+
+    });
+
+    
     // Promise.all([
     //     getAccountInfo()
     // ])
@@ -61,13 +80,13 @@ app.get('/', (req, res) => {
     // });
 });
 
-app.post('/post', (req, res) => {
-    Data.post = req.body.name;
-    app.render('inc/test-body', {Data}, function(err, html){
-        console.dir(html);
-        res.send(html);
-    });
-});
+// app.post('/post', (req, res) => {
+//     Data.post = req.body.name;
+//     app.render('inc/test-body', {Data}, function(err, html){
+//         console.dir(html);
+//         res.send(html);
+//     });
+// });
 
 app.use((req, res, next) => {
     next(err);

@@ -1,13 +1,16 @@
-ul
-	li
-		div Tweet time - 
-		div(style='background-image: url("/image.jpg");')
-			img(src='')
-		div Account Name - 
-		div Account Screen Name - 
-		p Tweet body
-		ul
-			li Reply
-			li Retweet - 
-			li Likes - 
-			li Retweet Likes - 
+#tweetsList
+	ul
+		each val in Data.tweet
+			li
+				div Tweet time - #{val.time}
+				div(style=`width: 100px; height: 100px; background-image: url(${Data.accountInfo.profileImage});`)
+					img(src=`${Data.profileImage}`)
+				div Account Name - #{Data.accountInfo.name}
+				div Account Screen Name - #{Data.accountInfo.screenName}
+				p #{val.tweet}
+				ul
+					li Reply
+					li Retweet - #{val.retweets}
+					li Likes - #{val.likes}
+					if val.retweetLikes
+						li Retweet Likes - #{val.retweetLikes}
