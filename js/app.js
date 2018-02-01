@@ -16,17 +16,17 @@ app.use(bodyParser.urlencoded({extended: false}))
 let T = new Twit(config);
 
 app.get('/', (req, res) => {
-
-    Promise.all([
-        getAccountInfo()
-    ])
-    .then(values => {
-        T.post('statuses/update', {
-            status: 'The joker!'
-        }).then(values => {
-            console.log(values);
-        })
-    });
+    res.render('inc/test-body');
+    // Promise.all([
+    //     getAccountInfo()
+    // ])
+    // .then(values => {
+    //     T.post('statuses/update', {
+    //         status: 'The joker!'
+    //     }).then(values => {
+    //         console.log(values);
+    //     })
+    // });
 
 
 

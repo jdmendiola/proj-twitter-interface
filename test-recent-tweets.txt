@@ -1,0 +1,17 @@
+<ul>
+	<li>
+		<div>Tweet time - </div>
+		<div style='background-image: url("/image.jpg");'>
+			<img src='' />
+		</div>
+		<div>Account Name - </div>
+		<div>Account Screen Name - </div>
+		<p>Tweet body</p>
+		<ul>
+			<li>Reply</li>
+			<li>Retweet - </li>
+			<li>Likes - </li>
+			<li>Retweet Likes - </li>
+		</ul>
+	</li>
+</ul>
