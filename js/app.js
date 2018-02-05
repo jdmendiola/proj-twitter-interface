@@ -35,23 +35,6 @@ app.get('/', (req, res) => {
 
     });
 
-    
-    // Promise.all([
-    //     getAccountInfo()
-    // ])
-    // .then(values => {
-    //     T.post('statuses/update', {
-    //         status: 'The joker!'
-    //     }).then(values => {
-    //         console.log(values);
-    //     })
-    // });
-
-
-
-
-
-
     // Promise.all([
     //     getAccountInfo()
     // ])
@@ -232,5 +215,4 @@ function getRecentSentMessage(count) {
             return message
 
         });
-
 }

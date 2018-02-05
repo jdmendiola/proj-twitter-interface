@@ -1,16 +1,17 @@
-ul
-	each val in Data.tweet
-		li
-			div Tweet time - #{val.time}
-			div(style=`width: 100px; height: 100px; background-image: url(${Data.accountInfo.profileImage});`)
-				img(src=`${Data.profileImage}`)
-			div Account Name - #{Data.accountInfo.name}
-			div Account Screen Name - #{Data.accountInfo.screenName}
-			p 
-				strong #{val.tweet}
-			ul
-				li Reply
-				li Retweet - #{val.retweets}
-				li Likes - #{val.likes}
-				if val.retweetLikes
-					li Retweet Likes - #{val.retweetLikes}
+#tweetsList
+	ul
+		each val in Data.tweet
+			li
+				div Tweet time - #{val.time}
+				div(style=`width: 100px; height: 100px; background-image: url(${Data.accountInfo.profileImage});`)
+					img(src=`${Data.profileImage}`)
+				div Account Name - #{Data.accountInfo.name}
+				div Account Screen Name - #{Data.accountInfo.screenName}
+				p 
+					strong #{val.tweet}
+				ul
+					li Reply
+					li Retweet - #{val.retweets}
+					li Likes - #{val.likes}
+					if val.retweetLikes
+						li Retweet Likes - #{val.retweetLikes}
