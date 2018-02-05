@@ -3,17 +3,20 @@ $(function(){
     //character count
     $("#tweet-textarea").on("keyup change", updateCount);
     //ajax
-    $('#tweetSubmit').on('click', function(e){
+    $('#tweetSubmit').on('submit', function(e){
+
+        e.preventDefault();
         
-        let tweetMessage = $('#tweetData').val();        
+        let tweetMessage = $("#tweet-textarea").val();        
 
         if (tweetMessage.length <= 140 && tweetMessage.length !== 0 && tweetMessage.length !== null){
             console.log(tweetMessage);
             $.post('/post', {name: tweetMessage}, function(data){
-                $('#tweetsList').html(data);
-            });            
-        } else {
-            alert('tweet message too long please shorten....');
+                $('#most-recent-tweets').html(data);
+                $("#tweet-textarea").val('');
+                $('#tweet-char').text('140');
+                alert('Tweet submitted!');
+            });
         }
 
     });

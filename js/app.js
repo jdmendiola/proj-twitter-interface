@@ -17,50 +17,51 @@ let T = new Twit(config);
 
 app.get('/', (req, res) => {
 
+    // Promise.all([
+
+    //     getAccountInfo()
+
+    // ]).then(values => {
+
+    //     Data.accountInfo = values[0];
+
+    //     Promise.all([
+    //         getRecentTweets(Data.accountInfo.screenName, 5)
+    //     ]).then(values => {
+    //         Data.tweet = values[0];
+    //         console.log(Data.tweet);
+    //         res.render('test-index', {Data});
+    //     });
+
+    // });
+
     Promise.all([
-
         getAccountInfo()
-
-    ]).then(values => {
+    ])
+    .then(values => {
 
         Data.accountInfo = values[0];
-
+        
         Promise.all([
-            getRecentTweets(Data.accountInfo.screenName, 5)
-        ]).then(values => {
-            Data.tweet = values[0];
-            console.log(Data.tweet);
-            res.render('test-index', {Data});
-        });
+                getAccountBanner(Data.accountInfo.screenName),
+                getRecentTweets(Data.accountInfo.screenName, 5),
+                getRecentFriends(Data.accountInfo.screenName, 5),
+                getRecentSentMessage(5)
+            ])
+            .then(values => {
+
+                Data.headerImage = values[0];
+                Data.tweet = values[1];
+                Data.friendsList = values[2]
+                Data.sentMessages = values[3]
+                res.render('index', {
+                    Data
+                });
+
+            });
 
     });
 
-    // Promise.all([
-    //     getAccountInfo()
-    // ])
-    // .then(values => {
-
-    //     Data.accountInfo = values[0];
-        
-    //     Promise.all([
-    //             getAccountBanner(Data.accountInfo.screenName),
-    //             getRecentTweets(Data.accountInfo.screenName, 5),
-    //             getRecentFriends(Data.accountInfo.screenName, 5),
-    //             getRecentSentMessage(5)
-    //         ])
-    //         .then(values => {
-
-    //             Data.headerImage = values[0];
-    //             Data.tweet = values[1];
-    //             Data.friendsList = values[2]
-    //             Data.sentMessages = values[3]
-    //             res.render('index', {
-    //                 Data
-    //             });
-
-    //         });
-
-    // });
 });
 
 app.post('/post', (req, res) => {
@@ -69,7 +70,13 @@ app.post('/post', (req, res) => {
 
     T.post('statuses/update', {
         status: tweet
-    }).then(values => {
+    })
+    
+    .catch(error => {
+        console.log(error);
+    })    
+    
+    .then(values => {
 
         Promise.all([
             getAccountInfo()
@@ -80,7 +87,7 @@ app.post('/post', (req, res) => {
             ]).then(values => {
                 Data.tweet = values[0];
                 console.log(Data.tweet);
-                app.render('inc/test-recent-tweets', {Data}, function(err, html){
+                app.render('inc/recent-tweets', {Data}, function(err, html){
                     res.send(html);
                 });    
             });
