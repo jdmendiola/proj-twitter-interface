@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
         Data.accountInfo = values[0];
 
         Promise.all([
-            getRecentTweets(Data.accountInfo.screenName, 1)
+            getRecentTweets(Data.accountInfo.screenName, 5)
         ]).then(values => {
             Data.tweet = values[0];
             console.log(Data.tweet);
@@ -80,13 +80,32 @@ app.get('/', (req, res) => {
     // });
 });
 
-// app.post('/post', (req, res) => {
-//     Data.post = req.body.name;
-//     app.render('inc/test-body', {Data}, function(err, html){
-//         console.dir(html);
-//         res.send(html);
-//     });
-// });
+app.post('/post', (req, res) => {
+
+    let tweet = req.body.name;
+
+    T.post('statuses/update', {
+        status: tweet
+    }).then(values => {
+
+        Promise.all([
+            getAccountInfo()
+        ]).then(values => {
+            Data.accountInfo = values[0];
+            Promise.all([
+                getRecentTweets(Data.accountInfo.screenName, 5)
+            ]).then(values => {
+                Data.tweet = values[0];
+                console.log(Data.tweet);
+                app.render('inc/test-recent-tweets', {Data}, function(err, html){
+                    res.send(html);
+                });    
+            });
+        });
+        
+    });    
+
+});
 
 app.use((req, res, next) => {
     next(err);
